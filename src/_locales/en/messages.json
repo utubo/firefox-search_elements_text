@@ -1,0 +1,12 @@
+{
+	"extensionName": {
+		"message": "Search Element's text"
+	},
+	"extensionDescription": {
+		"message": "Add 'Search Element's text' to the context menu."
+	},
+	"Search Element's text": {
+		"message": "Search Element's text"
+	}
+}
+

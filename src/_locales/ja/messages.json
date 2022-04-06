@@ -1,0 +1,11 @@
+{
+	"extensionName": {
+		"message": "要素のテキストを検索"
+	},
+	"extensionDescription": {
+		"message": "コンテキストメニューに「要素のテキストを検索」を追加します"
+	},
+	"Search Element's text": {
+		"message": "要素のテキストを検索"
+	}
+}
