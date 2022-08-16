@@ -29,7 +29,7 @@ browser.menus.onClicked.addListener(async (info, tab) => {
   });
   const text = result[0];
   if (!text) return;
-  const trimmed = text.replace(/^\s+|\s$/g, '').reaplce(/\s+/g, ' ');
+  const trimmed = text.replace(/^\s+|\s+$/g, '').replace(/\s+/g, ' ');
   if (!trimmed) return;
   browser.search.search({ query: trimmed });
 });
