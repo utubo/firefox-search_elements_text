@@ -29,6 +29,8 @@ browser.menus.onClicked.addListener(async (info, tab) => {
   });
   const text = result[0];
   if (!text) return;
-  browser.search.search({ query: text });
+  const trimmed = text.replace(/^\s+|\s$/g, '').reaplce(/\s+/g, ' ');
+  if (!trimmed) return;
+  browser.search.search({ query: trimmed });
 });
 
