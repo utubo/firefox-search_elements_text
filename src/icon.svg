@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 16 16" opacity="context-fill-opacity" fill="none" stroke-width="1.5" stroke-linejoin="round">
 <style>
-path { stroke: #0c0c0d; }
-@media (prefers-color-scheme: dark) { path { stroke: #fbfbfe; } }
+path,circle { stroke: #0c0c0d; }
+@media (prefers-color-scheme: dark) { path,circle { stroke: #fbfbfe; } }
 </style>
 <path d="M3 5l-2 3 2 3"/>
 <path d="M13 5l 2 3-2 3"/>
