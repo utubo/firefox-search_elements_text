@@ -3,6 +3,7 @@ const MENU_ID_PREFIX = 'search_elements_text_';
 let defaultEngine = '';
 
 const createMenu = async () => {
+  // get target engines
   const ignores = (await browser.storage.local.get()).ignores || [];
   const engines = await browser.search.get();
   let count = 0;
@@ -13,16 +14,21 @@ const createMenu = async () => {
       count ++;
     }
   }
+
   // only one engine
-  browser.menus.create({
-    id: MENU_ID_PREFIX,
-    title: browser.i18n.getMessage("extensionName"),
-    documentUrlPatterns: ['https://*/*', 'http://*/*'],
-    contexts: ['all'],
-  });
-  browser.menus.update(MENU_ID_PREFIX, { visible: count <= 1, });
-  // all engines
+  browser.menus.removeAll();
+  if (count <= 1)  {
+    browser.menus.create({
+      id: MENU_ID_PREFIX,
+      title: browser.i18n.getMessage("extensionName"),
+      documentUrlPatterns: ['https://*/*', 'http://*/*'],
+      contexts: ['all'],
+    });
+  }
+
+  // show all engines in submenu
   for (const engine of engines) {
+    if (ignores.includes(engine.name)) continue;
     browser.menus.create({
       id: MENU_ID_PREFIX + engine.name,
       title: engine.name,
@@ -31,9 +37,6 @@ const createMenu = async () => {
       },
       documentUrlPatterns: ['https://*/*', 'http://*/*'],
       contexts: ['all'],
-    });
-    browser.menus.update(MENU_ID_PREFIX + engine.name, {
-      visible: 1 < count && !ignores.includes(engine.name),
     });
   }
 };
