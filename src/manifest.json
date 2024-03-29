@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "2.1",
+  "version": "2.2",
 
   "default_locale": "en",
 
@@ -33,6 +33,10 @@
     "scripting",
     "search",
     "storage"
+  ],
+
+  "host_permissions": [
+    "<all_urls>"
   ]
 }
 
