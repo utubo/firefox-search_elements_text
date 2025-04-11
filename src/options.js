@@ -16,6 +16,7 @@ const saveOptions = () => {
   }
   browser.storage.local.set({
     ignores: ignores,
+    background: document.getElementById('background').checked,
   });
 };
 
@@ -35,10 +36,13 @@ const setupSettingsPage = async () => {
     item.getElementsByTagName('SPAN')[0].textContent = engine.name;
     engineList.appendChild(item);
   }
+  document.getElementById('background').checked = !!settings.background;
 
   for (const i of document.getElementsByTagName('INPUT')) {
     i.addEventListener('input', saveOptions);
   }
+
+  document.documentElement.setAttribute('lang', navigator.language);
 }
 
 document.addEventListener('DOMContentLoaded', setupSettingsPage);

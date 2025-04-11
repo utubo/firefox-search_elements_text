@@ -1,5 +1,5 @@
 const MENU_ID_PREFIX = 'search_elements_text_';
-const TITLE = browser.i18n.getMessage("extensionName");
+const TITLE = browser.i18n.getMessage("Search");
 
 browser.menus.create({
   id: MENU_ID_PREFIX,
@@ -11,27 +11,30 @@ browser.menus.create({
 let defaultEngine = '';
 let targetText = '';
 
+const hideMenu = async (info) => {
+  for (const id of info.menuIds) {
+    await browser.menus.update(id, { visible: false });
+  }
+  await browser.menus.update(MENU_ID_PREFIX, { visible: false });
+  await browser.menus.refresh()
+}
+
 const updateMenu = async (info, tab) => {
   const newMenus = [MENU_ID_PREFIX];
-  targetText = await getText(info, tab);
+  targetText = null;
+  try {
+    targetText = await getText(info, tab);
+  } catch {
+    // nop
+  }
   if (targetText) {
     // default
     await browser.menus.update(MENU_ID_PREFIX, {
       visible: true,
-      title: `${TITLE}: "${trunc(targetText, 10)}"`
-    });
-  } else if (targetText === null) {
-    // no host permission
-    await browser.menus.update(MENU_ID_PREFIX, {
-      visible: true,
-      title: TITLE
+      title: `${TITLE}: "${trunc(targetText)}"`
     });
   } else {
-    // no text content
-    await browser.menus.update(MENU_ID_PREFIX, {
-      visible: false,
-      title: TITLE
-    });
+    await hideMenu(info);
     return newMenus;
   }
 
@@ -62,12 +65,6 @@ const updateMenu = async (info, tab) => {
   return newMenus;
 };
 
-const cleanupSubmenus = (info, newMenus) => {
-  for (const id of info.menuIds.filter(a => !newMenus.includes(a))) {
-    browser.menus.remove(id);
-  }
-};
-
 // -------------------
 // search!
 browser.menus.onClicked.addListener(async (info, tab) => {
@@ -76,6 +73,9 @@ browser.menus.onClicked.addListener(async (info, tab) => {
   if (!text) return;
   const engine = info.menuItemId.replace(MENU_ID_PREFIX, '');
   browser.search.search({ query: text, engine: engine || defaultEngine });
+  if ((await browser.storage.local.get()).background) {
+    browser.tabs.update(tab.id, { active: true });
+  }
 });
 
 // -------------------
@@ -107,7 +107,7 @@ const getText = async (info, tab) => {
   return trimmed;
 };
 
-const trunc = (str, n) => (n < str.length) ? str.slice(0, n - 3) + '...' : str;
+const trunc = str => (str.length <= 13) ? str : `${str.slice(0, 5)}...${str.slice(-5)}`;
 
 // -------------------
 // show menu
@@ -118,14 +118,21 @@ browser.menus.onShown.addListener(async (info, tab) => {
   let menuInstanceId = nextMenuInstanceId++;
   lastMenuInstanceId = menuInstanceId;
   const newMenus = await updateMenu(info, tab);
-  cleanupSubmenus(info, newMenus);
+  cleanupSubMenus(info, newMenus);
   // must now perform the check
   if (menuInstanceId === lastMenuInstanceId) {
     browser.menus.refresh();
   }
 });
 
-browser.menus.onHidden.addListener(() => {
+const cleanupSubMenus = async (info, newMenus) => {
+  for (const id of info.menuIds.filter(a => !newMenus.includes(a))) {
+    await browser.menus.remove(id);
+  }
+};
+
+browser.menus.onHidden.addListener(async info => {
   lastMenuInstanceId = 0;
+  await hideMenu(info);
 });
 

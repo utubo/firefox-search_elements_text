@@ -5,8 +5,17 @@
 	"extensionDescription": {
 		"message": "Add 'Search Text of Element' to the context menu."
 	},
-	"Search Engine": {
-		"message": "Searcn Engine"
+	"Search": {
+		"message": "Search"
+	},
+	"Search Engines": {
+		"message": "Search Engines"
+	},
+	"Settings": {
+		"message": "Settings"
+	},
+	"Open in background": {
+		"message": "Open in background"
 	}
 }
 

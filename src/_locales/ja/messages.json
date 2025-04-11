@@ -5,7 +5,16 @@
 	"extensionDescription": {
 		"message": "コンテキストメニューに「要素のテキストを検索」を追加します"
 	},
-	"Search Engine": {
+	"Search": {
+		"message": "検索"
+	},
+	"Search Engines": {
 		"message": "検索エンジン"
+	},
+	"Settings": {
+		"message": "オプション"
+	},
+	"Open in background": {
+		"message": "バックグランドで開く"
 	}
 }
