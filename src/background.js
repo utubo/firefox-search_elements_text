@@ -73,7 +73,7 @@ browser.menus.onClicked.addListener(async (info, tab) => {
   if (!text) return;
   const engine = info.menuItemId.replace(MENU_ID_PREFIX, '');
   browser.search.search({ query: text, engine: engine || defaultEngine });
-  if ((await browser.storage.local.get()).background) {
+  if (info.modifiers.includes("Ctrl") || info.button !== 0) {
     browser.tabs.update(tab.id, { active: true });
   }
 });
