@@ -31,7 +31,7 @@ const setupSettingsPage = async () => {
     if (!settings.ignores || !settings.ignores.includes(engine.name)) {
       chk.checked = true;
     }
-    item.getElementsByTagName('IMG')[0].src = engine.favIconUrl;
+    item.getElementsByTagName('IMG')[0].src = engine.favIconUrl ?? 'default.svg';
     item.getElementsByTagName('SPAN')[0].textContent = engine.name;
     engineList.appendChild(item);
   }

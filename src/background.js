@@ -56,7 +56,7 @@ const updateMenu = async (info, tab) => {
       await browser.menus.create({
         id: id,
         title: engine.name,
-        icons: { 32: engine.favIconUrl },
+        icons: { 32: engine.favIconUrl ?? 'default.svg'},
         documentUrlPatterns: ['https://*/*', 'http://*/*'],
         contexts: ['all'],
       });
